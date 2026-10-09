@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Campaign Health Checker membantu marketer membaca funnel sebelum mengubah budget iklan.">
+  <title>Campaign Health Checker — Iqbal Digital Era</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <div>
+        <div class="brand"><span class="brand-mark" aria-hidden="true"></span>IQBAL DIGITAL ERA <span class="beta-badge">PUBLIC BETA</span></div>
+        <h1>Campaign Health Checker</h1>
+        <p class="subtitle">Baca funnel sebelum utak-atik budget.</p>
+        <p class="privacy-note">Data diproses langsung di browser dan tidak disimpan oleh tool.</p>
+      </div>
+      <div class="version">v0.1 · Purchase campaign · Beta</div>
+    </header>
+
+    <div class="layout">
+      <form class="panel" id="health-form" novalidate>
+        <section class="section first-section">
+          <div class="section-head">
+            <h2>Informasi campaign</h2>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label for="campaign-name">Nama campaign</label>
+              <input id="campaign-name" value="Sepatu Running A — Iklan Produk">
+            </div>
+            <div class="field">
+              <label for="platform">Platform</label>
+              <select id="platform">
+                <option>Google Ads</option>
+                <option>Meta Ads</option>
+                <option selected>Shopee Ads</option>
+                <option>TikTok Ads</option>
+                <option>Lainnya</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="period-start">Periode mulai</label>
+              <input id="period-start" type="date" value="2026-10-01">
+            </div>
+            <div class="field">
+              <label for="period-end">Periode selesai</label>
+              <input id="period-end" type="date" value="2026-10-07">
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2>Cara memasukkan data</h2>
+            <span class="helper">Data tetap bisa diperiksa sebelum dianalisis</span>
+          </div>
+          <div class="input-methods" role="group" aria-label="Cara memasukkan data">
+            <button class="method-button is-active" id="manual-method" type="button" aria-pressed="true">Isi manual</button>
+            <button class="method-button" id="upload-method" type="button" aria-pressed="false">Upload template CSV</button>
+          </div>
+          <div class="upload-box" id="upload-box">
+            <div class="upload-row">
+              <div class="field">
+                <label for="csv-file">File template standar</label>
+                <input id="csv-file" type="file" accept=".csv,text/csv">
+              </div>
+              <button class="secondary-action" id="load-csv" type="button">Masukkan data</button>
+            </div>
+            <div class="upload-actions">
+              <button class="text-action" id="download-template" type="button">Unduh contoh template</button>
+            </div>
+            <p class="upload-note">Versi awal memakai template standar, bukan file ekspor mentah dari platform. Konteks stok, tracking, dan promo tetap dilengkapi setelah data masuk.</p>
+            <p class="upload-status" id="upload-status" aria-live="polite"></p>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2>Data performa</h2>
+            <span class="helper">Gunakan periode dan atribusi yang sama</span>
+          </div>
+          <div class="grid-3">
+            <div class="field">
+              <label for="spend">Ad spend (Rp)</label>
+              <input id="spend" inputmode="numeric" type="number" min="0" value="1750000">
+            </div>
+            <div class="field">
+              <label for="impressions">Impressions</label>
+              <input id="impressions" inputmode="numeric" type="number" min="0" value="78125">
+            </div>
+            <div class="field">
+              <label for="clicks">Clicks</label>
+              <input id="clicks" inputmode="numeric" type="number" min="0" value="2500">
+            </div>
+            <div class="field">
+              <label for="purchases">Purchase conversions</label>
+              <input id="purchases" inputmode="numeric" type="number" min="0" value="10">
+            </div>
+            <div class="field">
+              <label for="revenue">Attributed purchase revenue (Rp)</label>
+              <input id="revenue" inputmode="numeric" type="number" min="0" value="4000000">
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2>Target campaign</h2>
+            <span class="helper">Isi minimal salah satu</span>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label for="target-cpa">Target CPA (Rp)</label>
+              <input id="target-cpa" inputmode="numeric" type="number" min="0" value="100000">
+            </div>
+            <div class="field">
+              <label for="target-roas">Break-even ROAS</label>
+              <input id="target-roas" inputmode="decimal" type="number" min="0" step="0.01" value="3">
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2>Pemeriksaan tambahan</h2>
+            <span class="helper" id="platform-check-label">Pemeriksaan untuk Shopee Ads</span>
+          </div>
+          <div class="context-list">
+            <div class="context-item">
+              <label for="primary-conversion">Primary conversion benar-benar purchase?</label>
+              <select id="primary-conversion"><option selected>Ya</option><option>Tidak</option><option>Belum tahu</option></select>
+            </div>
+            <div class="context-item">
+              <label for="data-complete">Data periode tersebut sudah lengkap?</label>
+              <select id="data-complete"><option selected>Ya</option><option>Tidak</option><option>Belum tahu</option></select>
+            </div>
+            <div class="context-item">
+              <label for="link-correct">Link menuju produk yang benar?</label>
+              <select id="link-correct"><option selected>Ya</option><option>Tidak</option><option>Belum tahu</option><option>Tidak relevan</option></select>
+            </div>
+          </div>
+          <div class="platform-group">
+            <h3 id="platform-heading">Khusus Shopee Ads</h3>
+            <div class="context-list" id="platform-checks"></div>
+          </div>
+        </section>
+
+        <button class="primary-action" type="submit">Periksa campaign</button>
+        <div class="validation" id="validation" role="alert"></div>
+      </form>
+
+      <aside class="panel results" aria-live="polite">
+        <div class="result-top">
+          <div>
+            <p class="eyebrow">Hasil pemeriksaan</p>
+            <h2 id="status-label">Periksa operasional</h2>
+            <span class="status-code" id="status-code">Operational check required</span>
+          </div>
+        </div>
+
+        <div class="metrics">
+          <div class="metric"><span class="metric-label">CTR</span><span class="metric-value" id="m-ctr">3,20%</span></div>
+          <div class="metric"><span class="metric-label">CPC</span><span class="metric-value" id="m-cpc">Rp700</span></div>
+          <div class="metric"><span class="metric-label">CVR</span><span class="metric-value" id="m-cvr">0,40%</span></div>
+          <div class="metric"><span class="metric-label">CPA</span><span class="metric-value" id="m-cpa">Rp175.000</span></div>
+          <div class="metric"><span class="metric-label">ROAS</span><span class="metric-value" id="m-roas">2,29×</span></div>
+        </div>
+
+        <div class="diagnosis">
+          <h3>Kesimpulan yang bisa dibuat</h3>
+          <p id="diagnosis-copy">Ada kondisi operasional yang dapat menghambat purchase, sementara CPA atau ROAS juga belum memenuhi target.</p>
+          <ul class="interpretation" id="interpretation"></ul>
+
+          <div class="analysis-limit">
+            <h3>Yang belum bisa disimpulkan</h3>
+            <p id="analysis-limit-copy">Angka agregat belum bisa memastikan penyebab utamanya. Tool perlu memakai pemeriksaan tambahan agar tidak asal menyalahkan iklan.</p>
+          </div>
+
+          <div class="journey-block">
+            <h3>Bagian setelah klik</h3>
+            <div class="journey" id="journey" aria-label="Tahapan setelah pengguna mengeklik iklan"></div>
+            <p id="journey-help">Click-to-purchase adalah rangkaian yang terjadi setelah orang mengeklik iklan sampai purchase tercatat.</p>
+          </div>
+
+          <div class="action-block">
+            <h3>Periksa ini berikutnya</h3>
+            <ol class="action-list" id="action-list"></ol>
+          </div>
+
+          <h3 class="warning-heading">Peringatan yang ditemukan</h3>
+          <ul class="checks" id="checks">
+            <li>Stok produk belum mencukupi.</li>
+            <li>Variasi utama tidak tersedia.</li>
+            <li>Periode mendekati payday atau campaign besar.</li>
+          </ul>
+          <div class="result-note" id="result-note">Jangan langsung menyimpulkan iklannya buruk. Periksa konteks operasional sebelum menaikkan budget.</div>
+        </div>
+        <p class="disclaimer">Hasil ini adalah pemeriksaan bersyarat berdasarkan data yang dimasukkan, bukan keputusan otomatis untuk mengubah budget.</p>
+      </aside>
+    </div>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
